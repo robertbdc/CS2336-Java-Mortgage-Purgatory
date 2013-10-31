@@ -7,12 +7,18 @@ import javax.swing.border.TitledBorder;
 
 public class LoanCalculator extends JFrame {
    // Create text fields for interest rate, years,
-   // loan amount, monthly payment, and total payment
+   // loan amount, monthly payment
    private JTextField jtfRate = new JTextField();//jtfAnnualInterestRate
    private JTextField jtfYears = new JTextField();//jtfNumberOfYears
    private JTextField jtfAmount = new JTextField();//jtfLoanAmount
    private JTextField jtfMonthly = new JTextField();//jtfMonthlyPayment
-   private JTextField jtfTotal = new JTextField();//jtfTotalPayment
+   
+   @Override
+   public Dimension getPreferredSize() {
+      // This will help Pack to pack it up better
+      return new Dimension(600, 300);
+   }   
+   
    
    // Create a Compute Payment button
    // todo: fancier than this
@@ -35,9 +41,6 @@ public class LoanCalculator extends JFrame {
       
       p1.add(new JLabel("Monthly Tribute"));
       p1.add(jtfMonthly);
-      
-      p1.add(new JLabel("Total Tribute"));
-      p1.add(jtfTotal);
       
       p1.setBorder(new TitledBorder("Enter all but one of the parameters of your servitude"));
       
@@ -63,9 +66,9 @@ public class LoanCalculator extends JFrame {
          // Here's where we get custom. :)
          // Find which field is blank, and calculate it.
          boolean needRate = false, needYears = false, needAmount = false,
-            needMonthly = false, needTotal = false;
+            needMonthly = false;
          double rate = -1.0, years = -1.0, amount = -1.0,
-            monthly = -1.0, total = -1.0;
+            monthly = -1.0;
          int iNeed = 0;
          int iFail = 0;
          
@@ -76,6 +79,7 @@ public class LoanCalculator extends JFrame {
          } else {
             rate = tryParse(curLine, -1.0);
             if (rate < 0) {
+               // rate *can* be zero
                iFail++;
                jtfRate.setText("");
                jtfRate.requestFocusInWindow();
@@ -88,7 +92,7 @@ public class LoanCalculator extends JFrame {
          } else {
             years = tryParse(curLine, -1.0);
             if (years <= 0) {
-               // years can't be zero, either
+               // years can't be zero
                iFail++;
                jtfYears.setText("");
                jtfYears.requestFocusInWindow();
@@ -100,7 +104,8 @@ public class LoanCalculator extends JFrame {
             iNeed++;
          } else {
             amount = tryParse(curLine, -1.0);
-            if (amount < 0) {
+            if (amount <= 0) {
+               // amount can't be zero
                iFail++;
                jtfAmount.setText("");
                jtfAmount.requestFocusInWindow();
@@ -112,22 +117,11 @@ public class LoanCalculator extends JFrame {
             iNeed++;
          } else {
             monthly = tryParse(curLine, -1.0);
-            if (monthly < 0) {
+            if (monthly <= 0) {
+               // monthly can't be zero
                iFail++;
                jtfMonthly.setText("");
                jtfMonthly.requestFocusInWindow();
-            }   
-         }
-         curLine = jtfTotal.getText().trim();
-         if (curLine.equals("")) {
-            needTotal = true;
-            iNeed++;
-         } else {
-            total = tryParse(curLine, -1.0);
-            if (total < 0) {
-               iFail++;
-               jtfTotal.setText("");
-               jtfTotal.requestFocusInWindow();
             }   
          }
          
@@ -137,23 +131,22 @@ public class LoanCalculator extends JFrame {
             return;
          }
 
-         if (iNeed == 0) {
-            JOptionPane.showMessageDialog(null, "You have to leave something blank. Try again!");
-            return;
-         }
-
          if (iNeed > 1) {
             JOptionPane.showMessageDialog(null, "You can only leave one box blank. Make up your mind!");
             return;
          }
          
-         Loan myLoan = new Loan(rate, years, amount, monthly, total);
+         if (iNeed == 0) {
+            // Assume we want the new monthly rate
+            monthly = -1;
+         }
+
+         Loan myLoan = new Loan(rate, years, amount, monthly);
          
          jtfRate.setText(String.format("%.2f", myLoan.getRate()));
          jtfYears.setText(String.format("%.0f", myLoan.getYears()));
          jtfAmount.setText(String.format("%.2f", myLoan.getAmount()));
          jtfMonthly.setText(String.format("%.2f", myLoan.getMonthly()));
-         jtfTotal.setText(String.format("%.2f", myLoan.getTotal()));
 
          JOptionPane.showMessageDialog(null, "If this program was functional, you would be in debt now!");
          

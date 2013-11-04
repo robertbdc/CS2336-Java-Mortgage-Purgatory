@@ -27,20 +27,54 @@ public class LoanCalculator extends JFrame {
    // Constructor buids the panel
    public LoanCalculator() {
       // a panel with the fields
-      // todo: definitely make this better
-      JPanel p1 = new JPanel(new GridLayout(5, 2));
+      //JPanel p1 = new JPanel(new GridLayout(5, 2));
+      JPanel p1 = new JPanel(new GridBagLayout());
+      p1.setLayout(new GridBagLayout());
 
-      p1.add(new JLabel("Annual Interest Rate"));
-      p1.add(jtfRate);
+      GridBagConstraints c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 0;
+      c.gridy = 0;
+      p1.add(new JLabel("Annual Interest Rate"), c);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 1;
+      c.gridy = 0;
+      c.weightx = 0.25;
+      p1.add(jtfRate, c);
       
-      p1.add(new JLabel("Number of Years"));
-      p1.add(jtfYears);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 0;
+      c.gridy = 1;
+      p1.add(new JLabel("Number of Years"), c);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 1;
+      c.gridy = 1;
+      p1.add(jtfYears, c);
       
-      p1.add(new JLabel("Loan Amount"));
-      p1.add(jtfAmount);
-      
-      p1.add(new JLabel("Monthly Tribute"));
-      p1.add(jtfMonthly);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 0;
+      c.gridy = 2;
+      p1.add(new JLabel("Loan Amount"), c);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 1;
+      c.gridy = 2;
+      p1.add(jtfAmount, c);
+
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 0;
+      c.gridy = 3;
+      p1.add(new JLabel("Monthly Tribute"), c);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 1;
+      c.gridy = 3;
+      p1.add(jtfMonthly, c);
       
       p1.setBorder(new TitledBorder("Enter all but one of the parameters of your servitude"));
       

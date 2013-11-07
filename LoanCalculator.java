@@ -210,7 +210,20 @@ public class LoanCalculator extends JFrame {
          jtfAmount.setText(String.format("%.2f", myLoan.getAmount()));
          jtfMonthly.setText(String.format("%.2f", myLoan.getMonthly()));
 
-         JOptionPane.showMessageDialog(null, "If this program were fully functional, you would be in debt now!");
+         //JOptionPane.showMessageDialog(null, "If this program were fully functional, you would be in debt now!");
+      
+         OutputWindow outFrame = new OutputWindow();
+         outFrame.setTitle("Months of Confinement Carved into Wall");
+         outFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         outFrame.setSize(450,300);
+         // Not sure how to get the object containing the button that had this event
+         //JFrame mine = (JFrame)e.getSource().getTopLevelAncestor();
+         //Window mine = SwingUtilities.getWindowAncestor(e.getSource());
+         //outFrame.setLocation(new Point(e.getSource().getX() + this.getWidth() + 60, this.getY()));
+         outFrame.setVisible(true);
+         outFrame.setResizable(true);
+         outFrame.setText("If this program were fully functional, you would be in debt now!\n");
+
          
       } // end actionPerformed
    

@@ -10,6 +10,7 @@ public class LoanCalculator extends JFrame {
    // loan amount, monthly payment
    private JTextField jtfRate = new JTextField();//jtfAnnualInterestRate
    private JTextField jtfYears = new JTextField();//jtfNumberOfYears
+   private JTextField jtfMonths = new JTextField();
    private JTextField jtfAmount = new JTextField();//jtfLoanAmount
    private JTextField jtfMonthly = new JTextField();//jtfMonthlyPayment
    
@@ -40,7 +41,6 @@ public class LoanCalculator extends JFrame {
       c.fill = GridBagConstraints.HORIZONTAL;
       c.gridx = 1;
       c.gridy = 0;
-      c.weightx = 0.25;
       p1.add(jtfRate, c);
       
       c = new GridBagConstraints();
@@ -52,7 +52,20 @@ public class LoanCalculator extends JFrame {
       c.fill = GridBagConstraints.HORIZONTAL;
       c.gridx = 1;
       c.gridy = 1;
+      c.weightx = 0.25;
       p1.add(jtfYears, c);
+
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 2;
+      c.gridy = 1;
+      p1.add(new JLabel("or Months"), c);
+      c = new GridBagConstraints();
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx = 3;
+      c.gridy = 1;
+      c.weightx = 0.25;
+      p1.add(jtfMonths, c);
       
       c = new GridBagConstraints();
       c.fill = GridBagConstraints.HORIZONTAL;
@@ -99,16 +112,13 @@ public class LoanCalculator extends JFrame {
       public void actionPerformed(ActionEvent e) {
          // Here's where we get custom. :)
          // Find which field is blank, and calculate it.
-         boolean needRate = false, needYears = false, needAmount = false,
-            needMonthly = false;
-         double rate = -1.0, years = -1.0, amount = -1.0,
+         double rate = -1.0, years = -1.0, months = -1.0, amount = -1.0,
             monthly = -1.0;
          int iNeed = 0;
          int iFail = 0;
          
          String curLine = jtfRate.getText().trim();
          if (curLine.equals("")) {
-            needRate = true;
             iNeed++;
          } else {
             rate = tryParse(curLine, -1.0);
@@ -119,10 +129,23 @@ public class LoanCalculator extends JFrame {
                jtfRate.requestFocusInWindow();
             }   
          }
+         
+         // Years or Months. If both, use years.
          curLine = jtfYears.getText().trim();
          if (curLine.equals("")) {
-            needYears = true;
-            iNeed++;
+            curLine = jtfMonths.getText().trim();
+            if (curLine.equals("")) {
+               iNeed++;
+            }
+            else {
+               months = tryParse(curLine, -1.0);
+               if (months <= 0) {
+                  // months can't be zero
+                  iFail++;
+                  jtfMonths.setText("");
+                  jtfMonths.requestFocusInWindow();
+              }
+            }
          } else {
             years = tryParse(curLine, -1.0);
             if (years <= 0) {
@@ -130,11 +153,16 @@ public class LoanCalculator extends JFrame {
                iFail++;
                jtfYears.setText("");
                jtfYears.requestFocusInWindow();
-            }   
+               // Also clear months
+               jtfMonths.setText("");
+            }
+            else {
+               months = years * 12;
+            }
          }
+         
          curLine = jtfAmount.getText().trim();
          if (curLine.equals("")) {
-            needAmount = true;
             iNeed++;
          } else {
             amount = tryParse(curLine, -1.0);
@@ -147,7 +175,6 @@ public class LoanCalculator extends JFrame {
          }
          curLine = jtfMonthly.getText().trim();
          if (curLine.equals("")) {
-            needMonthly = true;
             iNeed++;
          } else {
             monthly = tryParse(curLine, -1.0);
@@ -161,7 +188,7 @@ public class LoanCalculator extends JFrame {
          
          // Validation!
          if (iFail > 0) {
-            JOptionPane.showMessageDialog(null, "One or more fields contained garbage. I threw it out.");
+            JOptionPane.showMessageDialog(null, "One or more fields contained garbage. I threw it out. Try again.");
             return;
          }
 
@@ -175,14 +202,15 @@ public class LoanCalculator extends JFrame {
             monthly = -1;
          }
 
-         Loan myLoan = new Loan(rate, years, amount, monthly);
+         Loan myLoan = new Loan(rate, months, amount, monthly);
          
          jtfRate.setText(String.format("%.2f", myLoan.getRate()));
-         jtfYears.setText(String.format("%.0f", myLoan.getYears()));
+         jtfYears.setText(String.format("%.2f", myLoan.getYears()));
+         jtfMonths.setText(String.format("%.0f", myLoan.getMonths()));
          jtfAmount.setText(String.format("%.2f", myLoan.getAmount()));
          jtfMonthly.setText(String.format("%.2f", myLoan.getMonthly()));
 
-         JOptionPane.showMessageDialog(null, "If this program was functional, you would be in debt now!");
+         JOptionPane.showMessageDialog(null, "If this program were fully functional, you would be in debt now!");
          
       } // end actionPerformed
    

@@ -1,3 +1,13 @@
+/* Robert Brooks, rab120130@utdallas.edu
+ * CS 2336, Section 501
+ * Created and tested using jGRASP
+ *
+ * Assignment 5
+ * Due date: 11/09/2013
+ * Implement a Mortgage Calculator with Amortization Schedule
+ * Note: project also saved at GitHub:
+ * https://github.com/robertbdc/CS2336-Java-Mortgage-Purgatory
+ */
 public class Loan {
    private double Rate; //annualInterestRate;
    private double Months;
@@ -5,9 +15,7 @@ public class Loan {
    private double Monthly;
    private java.util.Date loanDate;
    
-   /** Default constructor */
-   // Actually, I'm not going to allow a default constructor.
-   // Give it all to me! -1 for the value we need to calculate.
+   // Pass all parameters to instantiate object. Set value we need to calculate to -1.
    public Loan(double theRate, double theMonths, double theAmount, double theMonthly) {
       // scratch vars
       double theTop, theBottom;

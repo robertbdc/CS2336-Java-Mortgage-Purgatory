@@ -8,7 +8,6 @@ public class LoanCalculatorApp {
       jailCell.pack(); // Arrange controls compactly based on their properties
       jailCell.setTitle("Calculate your Sentence");
       jailCell.setLocationRelativeTo(null); // sure, center it, whatever
-      // todo: implement JFrame.GO_TO_LOAN_PAYMENT_PURGATORY
       jailCell.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       jailCell.setVisible(true);
    }

@@ -204,25 +204,36 @@ public class LoanCalculator extends JFrame {
 
          Loan myLoan = new Loan(rate, months, amount, monthly);
          
-         jtfRate.setText(String.format("%.2f", myLoan.getRate()));
-         jtfYears.setText(String.format("%.2f", myLoan.getYears()));
-         jtfMonths.setText(String.format("%.0f", myLoan.getMonths()));
-         jtfAmount.setText(String.format("%.2f", myLoan.getAmount()));
-         jtfMonthly.setText(String.format("%.2f", myLoan.getMonthly()));
+         String fmtRate = String.format("%.2f", myLoan.getRate());
+         String fmtYears = String.format("%.2f", myLoan.getYears());
+         String fmtMonths = String.format("%.0f", myLoan.getMonths());
+         String fmtAmount = String.format("%.2f", myLoan.getAmount());
+         String fmtMonthly = String.format("%.2f", myLoan.getMonthly());
+
+         jtfRate.setText(fmtRate);
+         jtfYears.setText(fmtYears);
+         jtfMonths.setText(fmtMonths);
+         jtfAmount.setText(fmtAmount);
+         jtfMonthly.setText(fmtMonthly);
 
          //JOptionPane.showMessageDialog(null, "If this program were fully functional, you would be in debt now!");
       
          OutputWindow outFrame = new OutputWindow();
-         outFrame.setTitle("Months of Confinement Carved into Wall");
-         outFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         outFrame.setSize(450,300);
-         // Not sure how to get the object containing the button that had this event
-         //JFrame mine = (JFrame)e.getSource().getTopLevelAncestor();
-         //Window mine = SwingUtilities.getWindowAncestor(e.getSource());
-         //outFrame.setLocation(new Point(e.getSource().getX() + this.getWidth() + 60, this.getY()));
+         outFrame.setTitle(String.format("Amortization: %s%%, %s Months, %s Total, %s Payment", fmtRate, fmtMonths, fmtAmount, fmtMonthly));
+         outFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+         outFrame.setSize(600,300);
+         outFrame.setLocationRelativeTo(null);
          outFrame.setVisible(true);
          outFrame.setResizable(true);
-         outFrame.setText("If this program were fully functional, you would be in debt now!\n");
+         outFrame.setText("Payment no\tPrincipal\tInterest\tRemaining\n");
+
+         double remPrin = myLoan.getAmount();
+         int payNo = 0;
+         
+         do {
+            outFrame.setText(String.format("%d\t%.2f\t%.2f\t%.2f\n", payNo, 5, 6, 7));
+            remPrin = -1.0;
+         } while (remPrin > 0);
 
          
       } // end actionPerformed
